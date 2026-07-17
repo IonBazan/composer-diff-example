@@ -1,0 +1,21 @@
+name: Composer Diff
+on: [pull_request]
+jobs:
+  composer-diff:
+    name: Composer Diff
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+      - name: Generate composer diff
+        id: composer_diff
+        uses: IonBazan/composer-diff-action@v2
+        with:
+          with-links: true
+          with-platform: true
+      - uses: marocchino/sticky-pull-request-comment@v2
+        with:
+          header: composer-diff
+          message: ${{ steps.composer_diff.outputs.composer_diff }}
